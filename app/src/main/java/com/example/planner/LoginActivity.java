@@ -16,12 +16,18 @@ public class LoginActivity extends AppCompatActivity {
     EditText logUsername, logPassword;
     Button btnLogin;
     DBHelper dbHelper;
+    SharedPrefManager spm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if(spm.getSPId(this) > 0)
+        {
+            Intent toDashboard = new Intent(LoginActivity.this,MainActivity.class);
+            startActivity(toDashboard);
+        }
         logUsername = findViewById(R.id.log_username);
         logPassword = findViewById(R.id.log_password);
         btnLogin = findViewById(R.id.btn_login);
@@ -38,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (res){
                     Toast.makeText(LoginActivity.this, "Login Success!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    spm.saveSPInt(getBaseContext(), spm.SP_ID, dbHelper.checkUserId(getUsername, getPassword));
                     intent.putExtra("data_name", String.valueOf(getName));
                     intent.putExtra("UserNameLogin", getUsername);
                     startActivity(intent);

@@ -5,12 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
-    private Context context;
 
     public static final String database_name = "db_task";
     public static final String table_user = "tb_user";
@@ -53,7 +51,7 @@ public class DBHelper extends SQLiteOpenHelper {
         database.execSQL(query);
         String queryDaily = "CREATE TABLE " + table_daily + "("
                 + row_dailyId + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-              //  + row_userid + " INTEGER, "
+                + row_userid + " INTEGER, "
                 + row_dailyPlan + " TEXT, "
                 + row_startTime + " TIME,"
                 + row_endTime + " TIME,"
@@ -157,11 +155,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return eventArrayList;
     }
 
-    public ArrayList<DailyPlaner> readDaily() {
+    public ArrayList<DailyPlaner> readDaily(int idUser) {
         //memanggil database untuk bisa dibaca
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + table_daily, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM tb_daily WHERE user_id = " +idUser, null);
 
         ArrayList<DailyPlaner> dailyPlanerArrayList = new ArrayList<DailyPlaner>();
 
@@ -169,9 +167,9 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 dailyPlanerArrayList.add(new DailyPlaner(cursor.getInt(0),
-                        cursor.getString(1),
                         cursor.getString(2),
-                        cursor.getString(3)));
+                        cursor.getString(3),
+                        cursor.getString(4)));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -179,17 +177,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertDaily(String id, String tambahdailyplan, String tambahstarttime, String tambahendtime) {
+    public void insertDaily(String getId, Integer userId, String tambahdailyplan, String tambahstarttime, String tambahendtime) {
 
         SQLiteDatabase dbWrite = this.getWritableDatabase();
         SQLiteDatabase dbRead = getReadableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put(row_userid, userId);
         values.put(row_dailyPlan, tambahdailyplan);
         values.put(row_startTime, tambahstarttime);
         values.put(row_endTime, tambahendtime);
 
-        Cursor checkSameInDaily = dbRead.rawQuery("SELECT*FROM tb_daily WHERE row_dailyId = "+id,null);
+        Cursor checkSameInDaily = dbRead.rawQuery("SELECT*FROM tb_daily WHERE row_dailyId = "+getId,null);
         if(checkSameInDaily.getCount() == 0)
         {
             dbWrite.insert(table_daily, null, values);
@@ -197,19 +196,18 @@ public class DBHelper extends SQLiteOpenHelper {
         else
         {
             checkSameInDaily.moveToLast();
-            dbWrite.update(table_daily, values, "row_dailyId=?", new String[]{id});
+            dbWrite.update(table_daily, values, "row_dailyId=?", new String[]{getId});
         }
 
         dbWrite.close();
         dbRead.close();
 
     }
-    public void deleteOneRow(String id){
-        long result = database.delete(table_daily, "row_dailyid=?", new String[]{id});
-        if(result == -1){
-            Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
-        }
+
+    public int checkUserId(String getUsername, String getPassword) {
+        SQLiteDatabase dbRead = getReadableDatabase();
+        Cursor check = dbRead.rawQuery("SELECT*FROM tb_user WHERE username = '"+getUsername+"' AND password = '"+getPassword+"'",null);
+        check.moveToFirst();
+        return check.getInt(0);
     }
 }

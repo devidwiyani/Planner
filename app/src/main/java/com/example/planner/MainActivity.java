@@ -11,11 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton btnDaily, btnEvent;
+    ImageButton btnDaily, btnEvent, btnLogout;
     TextView name;
+    SharedPrefManager spm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnDaily = findViewById(R.id.btn_daily);
         btnEvent = findViewById(R.id.btn_event);
+        btnLogout = findViewById(R.id.btn_logout);
 
         Intent bundle = getIntent();
         name = findViewById(R.id.name);
@@ -76,6 +79,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EventActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"Logout",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                spm.clearLoggedInUser(v.getContext());
                 startActivity(intent);
             }
         });

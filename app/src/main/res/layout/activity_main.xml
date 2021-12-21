@@ -18,6 +18,14 @@
         android:textStyle="bold"
         android:layout_marginBottom="15dp"/>
 
+    <ImageButton
+        android:id="@+id/btn_logout"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:backgroundTint="@color/white"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_chevron_right" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
