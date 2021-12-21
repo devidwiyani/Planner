@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    private Context context;
     public static final String database_name = "db_task";
     public static final String table_user = "tb_user";
     public static final String row_userid = "user_id";
@@ -209,5 +211,14 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor check = dbRead.rawQuery("SELECT*FROM tb_user WHERE username = '"+getUsername+"' AND password = '"+getPassword+"'",null);
         check.moveToFirst();
         return check.getInt(0);
+    }
+
+    public void deleteOneRow(String row_dailyId) {
+        long result = database.delete(table_daily, "row_dailyId=?", new String[]{row_dailyId});
+        if(result == -1){
+            Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
+        }
     }
 }
