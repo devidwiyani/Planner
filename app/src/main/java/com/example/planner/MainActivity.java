@@ -2,8 +2,11 @@ package com.example.planner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,6 +29,40 @@ public class MainActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
 
         name.setText(bundle.getStringExtra("data_name"));
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences userPref = getApplicationContext().getSharedPreferences("user", Context.MODE_PRIVATE);
+                boolean isLoggedIn = userPref.getBoolean("isLoggedIn", false);
+                if(isLoggedIn){
+                    startActivity(new Intent(MainActivity.this, DailyActivity.class));
+                    finish();
+                }
+                else {
+                    isFirstTime();
+                }
+            }
+        }, 1500);
+    }
+
+    private void isFirstTime() {
+        //untuk mengecek apakah aplikasinya berjalan untuk pertama kalinya
+        //valuenya di save di SharedPreferance
+        SharedPreferences preferences = getApplication().getSharedPreferences("onboard", Context.MODE_PRIVATE);
+        boolean isFirstTime = preferences.getBoolean("isFirstTime", true);
+
+        if(isFirstTime){
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isFirstTime", false);
+            editor.apply();
+
+            startActivity(new Intent(MainActivity.this, DailyActivity.class));
+            finish();
+        }else{
+            startActivity(new Intent(MainActivity.this, CreateDailyActivity.class));
+            finish();
+        }
 
         btnDaily.setOnClickListener(new View.OnClickListener() {
             @Override
