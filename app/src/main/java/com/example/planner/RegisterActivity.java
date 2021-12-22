@@ -1,13 +1,17 @@
 package com.example.planner;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,6 +21,18 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -69,7 +85,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String getUsername = regUsername.getText().toString();
                 String getPassword = regPassword.getText().toString();
                 String getName = regName.getText().toString();
-                int getUmur = seekBar.getProgress();
+                int umurSekk = seekBar.getProgress();
+                String getUmur = String.valueOf(umurSekk);
                 int selectedGender = groupRadio.getCheckedRadioButtonId();
 
                 if (getUsername.isEmpty() || getPassword.isEmpty() || getName.isEmpty() || seekBar.getProgress() == 0 || groupRadio.getCheckedRadioButtonId() == 0 ){
@@ -110,24 +127,51 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
 
-                            ContentValues values = new ContentValues();
-                            Intent intent = new Intent(RegisterActivity.this,MainActivity.class);
-//                            intent.putExtra("data_username", getUsername);
-//                            intent.putExtra("data_password", getPassword);
-                            intent.putExtra("data_name", getName);
-//                            intent.putExtra("data_umur", getUmur);
-//                            intent.putExtra("data_gender", getGender);
-                            startActivity(intent);
+                            StringRequest request = new StringRequest(Request.Method.POST, Constant.REGISTER, response -> {
+                                try {
+                                    JSONObject object = new JSONObject(response);
+                                    Log.d("TAG", String.valueOf(object));
+                                    if (object.getBoolean("success")){
+                                        JSONObject user = object.getJSONObject("user");
+                                        SharedPreferences userPref = getApplication().getSharedPreferences("user", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = userPref.edit();
+                                        editor.putString("token",object.getString("token"));
+                                        editor.putBoolean("isLoggedIn", true);
+                                        editor.apply();
 
-                            values.put(DBHelper.row_username, getUsername);
-                            values.put(DBHelper.row_password, getPassword);
-                            values.put(DBHelper.row_name, getName);
-                            values.put(DBHelper.row_umur, getUmur);
-                            values.put(DBHelper.row_gender, getGender);
-                            dbHelper.insertUser(values);
+                                        ContentValues values = new ContentValues();
 
-                            Toast.makeText(RegisterActivity.this, "Register Succesful", Toast.LENGTH_SHORT).show();
+                                        values.put(DBHelper.row_username, user.getString("username"));
+                                        values.put(DBHelper.row_name, user.getString("name"));
+                                        values.put(DBHelper.row_umur, user.getString("umur"));
+                                        values.put(DBHelper.row_gender, user.getString("gender"));
+                                        dbHelper.insertUser(values);
 
+                                        Toast.makeText(RegisterActivity.this, "Register Succesful", Toast.LENGTH_SHORT).show();
+
+                                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }catch(JSONException e){
+                                    e.printStackTrace();
+                                }
+                            },error -> {
+                                error.printStackTrace();
+                            }){
+                                @Nullable
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    HashMap<String,String> map = new HashMap<>();
+                                    map.put("username",getUsername);
+                                    map.put("password",getPassword);
+                                    map.put("name",getName);
+                                    map.put("umur",getUmur);
+                                    map.put("gender",getGender);
+                                    return map;
+                                }
+                            };
+                            RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                            queue.add(request);
                         }
                     });
 
@@ -136,6 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                     dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog2.show();
                 }
-
-        }
-    });}}
+            }
+        });
+    }
+}

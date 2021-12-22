@@ -46,7 +46,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "CREATE TABLE " + table_user + "("
                 + row_userid + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + row_username + " TEXT,"
-                + row_password + " TEXT,"
+//                + row_password + " TEXT,"
                 + row_name + " TEXT,"
                 + row_umur + " TEXT,"
                 + row_gender + " TEXT)";
@@ -215,10 +215,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void deleteOneRow(String row_dailyId) {
         long result = database.delete(table_daily, "row_dailyId=?", new String[]{row_dailyId});
-        if(result == -1){
-            Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
-        }
+
+
     }
 }

@@ -36,6 +36,7 @@
         <entry key="app/src/main/res/layout/activity_create_daily.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_daily.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22327898550724637" />
+        <entry key="app/src/main/res/layout/custom_alert.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/layout/item_daily.xml" value="0.1" />
       </map>
     </option>
