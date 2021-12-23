@@ -108,5 +108,6 @@ public class CreateDailyActivity extends AppCompatActivity {
             }
         }
     });
+
 }
 }

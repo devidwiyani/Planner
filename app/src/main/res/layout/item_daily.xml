@@ -49,6 +49,7 @@
                 android:textSize="15dp" />
 
             <ImageButton
+                android:id="@+id/buttondelete"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
