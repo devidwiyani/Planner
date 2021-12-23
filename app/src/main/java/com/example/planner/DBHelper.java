@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -105,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insertEvent(String id, String eventPlan, String eventLocation, String eventDate, String evenTime) {
+    public void insertEvent(String id, Integer userId, String eventPlan, String eventLocation, String eventDate, String evenTime) {
 
         SQLiteDatabase dbWrite = this.getWritableDatabase();
         SQLiteDatabase dbRead = getReadableDatabase();
@@ -115,6 +117,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(row_eventLocation, eventLocation);
         values.put(row_eventDate, eventDate);
         values.put(row_eventTime, evenTime);
+        values.put(row_userid, userId);
 
         Cursor checkSameInCart = dbRead.rawQuery("SELECT*FROM tb_event WHERE event_id = "+id,null);
         if(checkSameInCart.getCount() == 0)
@@ -122,6 +125,7 @@ public class DBHelper extends SQLiteOpenHelper {
             dbWrite.insert(table_event, null, values);
         }
         else
+
         {
             checkSameInCart.moveToLast();
             dbWrite.update(table_event, values, "event_id=?", new String[]{id});
@@ -131,12 +135,12 @@ public class DBHelper extends SQLiteOpenHelper {
         dbRead.close();
     }
 
-    public ArrayList<Event> readEvent() {
+    public ArrayList<Event> readEvent(int idUser) {
 
         //memanggil database untuk bisa dibaca
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + table_event, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM tb_event WHERE user_id = " + idUser, null);
 
         ArrayList<Event> eventArrayList = new ArrayList<Event>();
 
@@ -210,4 +214,65 @@ public class DBHelper extends SQLiteOpenHelper {
         check.moveToFirst();
         return check.getInt(0);
     }
+
+    public ArrayList<User> readFriend() {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM tb_user ", null);
+
+        ArrayList<User> friendArrayList = new ArrayList<User>();
+
+        //menambhakan data ke array (per baris)
+        if (cursor.moveToFirst()) {
+            do {
+                friendArrayList.add(new User(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return friendArrayList;
+
+    }
+
+    public int checkFriendId(String getUsername) {
+        SQLiteDatabase dbRead = this.getReadableDatabase();
+        Cursor check = dbRead.rawQuery("SELECT * FROM tb_user WHERE username = '"+getUsername+"'" ,null);
+        check.moveToFirst();
+        int x = check.getInt(0);
+        return x;
+    }
+
+    public void addFriendEvent(int checkFriendId, String eventName, String eventLocation, String eventDate, String eventTime) {
+        SQLiteDatabase dbWrite = this.getWritableDatabase();
+        SQLiteDatabase dbRead = getReadableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(row_userid, checkFriendId);
+        values.put(row_eventName, String.valueOf(eventName));
+        values.put(row_eventLocation, String.valueOf(eventLocation));
+        values.put(row_eventDate, String.valueOf(eventDate));
+        values.put(row_eventTime, String.valueOf(eventTime));
+
+
+        dbWrite.insert(table_event, null, values);
+
+
+        dbWrite.close();
+        dbRead.close();
+
+    }
+
+    public void delete (int id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM tb_event WHERE event_id = "+id, null);
+        db.close();
+
+    }
+
 }

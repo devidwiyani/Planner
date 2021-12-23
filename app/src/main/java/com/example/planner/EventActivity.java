@@ -18,16 +18,19 @@ public class EventActivity extends AppCompatActivity {
     DBHelper myDB;
     EventAdapter customAdapter;
     RecyclerView recyclerEvent;
+    SharedPrefManager spm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
 
+        int idUser= spm.getSPId(this);
+
         eventArrayList = new ArrayList<>();
         myDB = new DBHelper(EventActivity.this);
 
-        eventArrayList = myDB.readEvent();
+        eventArrayList = myDB.readEvent(idUser);
 
 
         customAdapter = new EventAdapter(eventArrayList, EventActivity.this);

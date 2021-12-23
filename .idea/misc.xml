@@ -11,6 +11,7 @@
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/frame_daily.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/frame_event.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/frame_time.xml" value="0.2703125" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_add.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_back.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_badge.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_chevron_right.xml" value="0.2703125" />
@@ -18,11 +19,11 @@
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_delete_blue.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_name.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_password.xml" value="0.2703125" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_person_add.xml" value="0.14375" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_profile.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_schedule.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/drawable/ic_time_management.xml" value="0.2703125" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout-w1240dp/custom_alert.xml" value="0.17006802721088435" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_create_daily.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_create_daily.xml" value="0.264" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_create_event.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_daily.xml" value="0.24010416666666667" />
@@ -30,10 +31,13 @@
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_login.xml" value="0.2" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_register.xml" value="0.264" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_share.xml" value="0.5428082191780822" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/activity_splash_screen.xml" value="0.264" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/alert_add_friend.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/custom_alert.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/item_daily.xml" value="0.264" />
-        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/item_event.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/item_event.xml" value="0.264" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Planner/app/src/main/res/layout/item_friend.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.22327898550724637" />
       </map>
     </option>
